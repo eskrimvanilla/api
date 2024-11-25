@@ -14,12 +14,11 @@
 						"exec": [
 							"pm.test('Signup Successful', function() {",
 							"    pm.response.to.have.status(201);",
-							"    pm.environment.set('testUserId', pm.response.json().userId);",
 							"});",
 							"",
-							"pm.test('Response Contains User ID', function() {",
+							"pm.test('Response Contains Success Message', function() {",
 							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData.userId).to.exist;",
+							"    pm.expect(jsonData.message).to.contain('User created successfully');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -60,12 +59,15 @@
 						"exec": [
 							"pm.test('Login Successful', function() {",
 							"    pm.response.to.have.status(200);",
-							"    pm.environment.set('authToken', pm.response.json().token);",
+							"    const jsonData = pm.response.json();",
+							"    pm.environment.set('authToken', jsonData.data.token);",
+							"    console.log('Login Token:', jsonData.data.token);",
 							"});",
 							"",
-							"pm.test('Response Contains Token', function() {",
+							"pm.test('Response Contains User Details', function() {",
 							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.expect(jsonData.data.user.email).to.exist;",
+							"    pm.expect(jsonData.data.token).to.exist;",
 							"});"
 						],
 						"type": "text/javascript"
